@@ -15,6 +15,7 @@ export default function Dictionary() {
   useEffect(() => {
     // Avoid making API calls with empty keyword
     if (keyword) {
+      // https://www.shecodes.io/learn/apis/dictionary
       const apiKey = "f9006f5eft0a33fd9693b7da488a8o99";
       const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
       axios.get(apiUrl).then(handleResponse).catch(handleError);
