@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import Definition from "./Definition";
 import "./Dictionary.css";
 
 export default function Dictionary() {
@@ -8,23 +9,24 @@ export default function Dictionary() {
 
   function handleResponse(response) {
     console.log(response.data);
+    setDefinition(response.data.meanings[0].definition);
   }
 
-  function handleError(erroe) {}
-
-  useEffect(() => {
-    // Avoid making API calls with empty keyword
-    if (keyword) {
-      // https://www.shecodes.io/learn/apis/dictionary
-      const apiKey = process.env.REACT_APP_API_KEY;
-      const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
-      axios.get(apiUrl).then(handleResponse).catch(handleError);
-    }
-  }, [keyword]);
+  function handleError(error) {
+    console.error("Error fetching the definition:", error);
+    setDefinition(null);
+    alert(
+      "Sorry, we couldn't find the definition for the word you were looking for."
+    );
+  }
 
   function search(event) {
     event.preventDefault();
-    alert("Searching for a word");
+
+    // https://www.shecodes.io/learn/apis/dictionary
+    const apiKey = "f9006f5eft0a33fd9693b7da488a8o99";
+    const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
+    axios.get(apiUrl).then(handleResponse).catch(handleError);
   }
 
   function handleKeywordChange(event) {
@@ -38,11 +40,12 @@ export default function Dictionary() {
           <input
             type="search"
             placeholder="ENTER A WORD"
-            autoFocus="on"
+            autoFocus={true}
             onChange={handleKeywordChange}
           />
           <input type="submit" value="SEARCH" />
         </form>
+        <Definition results={definition} />
       </div>
     </div>
   );
