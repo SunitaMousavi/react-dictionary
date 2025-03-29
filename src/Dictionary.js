@@ -9,24 +9,15 @@ export default function Dictionary() {
 
   function handleResponse(response) {
     console.log(response.data);
-    setDefinition(response.data.meanings[0].definition);
-  }
-
-  function handleError(error) {
-    console.error("Error fetching the definition:", error);
-    setDefinition(null);
-    alert(
-      "Sorry, we couldn't find the definition for the word you were looking for."
-    );
+    setDefinition(response.data[0]);
   }
 
   function search(event) {
     event.preventDefault();
 
-    // https://www.shecodes.io/learn/apis/dictionary
-    const apiKey = "f9006f5eft0a33fd9693b7da488a8o99";
-    const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
-    axios.get(apiUrl).then(handleResponse).catch(handleError);
+    // https://dictionaryapi.dev
+    const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${keyword}`;
+    axios.get(apiUrl).then(handleResponse);
   }
 
   function handleKeywordChange(event) {
@@ -35,18 +26,16 @@ export default function Dictionary() {
 
   return (
     <div className="Dictionary">
-      <div className="container">
-        <form onSubmit={search}>
-          <input
-            type="search"
-            placeholder="ENTER A WORD"
-            autoFocus={true}
-            onChange={handleKeywordChange}
-          />
-          <input type="submit" value="SEARCH" />
-        </form>
-        <Definition results={definition} />
-      </div>
+      <form onSubmit={search}>
+        <input
+          type="search"
+          placeholder="ENTER A WORD"
+          autoFocus={true}
+          onChange={handleKeywordChange}
+        />
+        <input type="submit" value="SEARCH" />
+      </form>
+      <Definition results={definition} />
     </div>
   );
 }
