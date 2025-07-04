@@ -1,0 +1,55 @@
+.Dictionary {
+  display: flex;
+  flex-direction: column; /* 🔧 stack form and results vertically */
+  align-items: center; /* 🔧 center horizontally */
+  gap: 15px; /* 🔧 spacing between form and results */
+}
+
+.Dictionary form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background-color: #8e9b81;
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  max-width: 700px;
+  width: 100%;
+}
+
+.Dictionary input[type="search"] {
+  flex: 1;
+  padding: 15px;
+  border: 2px solid #a57a67;
+  border-radius: 16px;
+  max-width: 600px;
+}
+
+.Dictionary input[type="search"]:focus {
+  border-color: none;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
+}
+
+.Dictionary .SearchButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.WordPhoneticBox {
+  
+  background-color: #8e9b81;
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: #fdf8e8;
+  width: 100%;
+  max-width: 800px;
+
+}

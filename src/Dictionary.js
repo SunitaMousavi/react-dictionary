@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Definition from "./Definition";
+import Results from "./Results";
 import "./Dictionary.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dictionary() {
+  // Stores user input word
   const [keyword, setKeyword] = useState("");
-  const [definition, setDefinition] = useState(null);
+  // Stores API response
+  const [results, setResults] = useState(null);
 
   function handleResponse(response) {
     console.log(response.data);
-    setDefinition(response.data[0]);
+    // Save API response to state
+    setResults(response.data);
   }
 
   function search(event) {
     event.preventDefault();
 
-    // https://dictionaryapi.dev
-    const apiUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${keyword}`;
+    // https://www.shecodes.io/learn/apis/dictionary
+    const apiKey = process.env.REACT_APP_DICTIONARY_API_KEY;
+    const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
     axios.get(apiUrl).then(handleResponse);
   }
 
   function handleKeywordChange(event) {
-    setKeyword(event.target.value);
+    // Update keyword as the user types
+    setKeyword(event.target.value.trim());
   }
 
   return (
@@ -33,9 +40,15 @@ export default function Dictionary() {
           autoFocus={true}
           onChange={handleKeywordChange}
         />
-        <input type="submit" value="SEARCH" />
+        <button type="submit" className="SearchButton" aria-label="Search">
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            style={{ color: "#fdf8e8" }}
+            size="2xl"
+          />
+        </button>
       </form>
-      <Definition results={definition} />
+      <Results results={results} />
     </div>
   );
 }

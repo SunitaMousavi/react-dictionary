@@ -9,31 +9,32 @@ function App() {
       <div className="container">
         <header className="App-header">
           <img src={books} className="img-fluid" alt="logo" />
-          </header>
-      <Dictionary />
-      <footer className="text-center">
-        Coded by{" "}
-        <a
-          href="https://github.com/SunitaMousavi"
-          target="_blank"
-          rel="noopener noreferrer">
-          Sunita Mousavi
-        </a>
-        , open-sourced on{" "}
-        <a
-          href="https://github.com/SunitaMousavi/react-dictionary"
-          target="_blank"
-          rel="noopener noreferrer">
-          GitHub
-        </a>{" "}
-        and hosted on{" "}
-        <a
-          href="https://reactdictionaryapp-sunitamousavi.netlify.app"
-          target="_blank"
-          rel="noopener noreferrer">
-          Netlify
-        </a>
-      </footer>
+          <h1 class="d-flex justify-content-center">Dictionary</h1>
+        </header>
+        <Dictionary />
+        <footer className="text-center">
+          Coded by{" "}
+          <a
+            href="https://github.com/SunitaMousavi"
+            target="_blank"
+            rel="noopener noreferrer">
+            Sunita Mousavi
+          </a>
+          , open-sourced on{" "}
+          <a
+            href="https://github.com/SunitaMousavi/react-dictionary"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub
+          </a>{" "}
+          and hosted on{" "}
+          <a
+            href="https://reactdictionaryapp-sunitamousavi.netlify.app"
+            target="_blank"
+            rel="noopener noreferrer">
+            Netlify
+          </a>
+        </footer>
       </div>
     </div>
   );
