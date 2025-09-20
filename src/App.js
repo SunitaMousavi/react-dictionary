@@ -1,16 +1,17 @@
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Dictionary from "./Dictionary";
 import Books from "./Books.png";
 
 function App() {
   return (
     <div className="App container">
-      <main>
-        <Dictionary />
-      </main>
       <header className="App-header">
         <img src={Books} alt="Books logo" />
       </header>
+      <main>
+        <Dictionary />
+      </main>
       <footer className="App-footer text-center">
         Coded by{" "}
         <a
