@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Results from "./Results";
 import SavedWords from "./SavedWords";
 
@@ -15,7 +17,7 @@ export default function Dictionary() {
   }
 
   // Search API
-  async function search(event) {
+  async function Search(event) {
     event.preventDefault();
     if (!keyword) return; // avoid empty search
     setLoading(true);
@@ -37,7 +39,9 @@ export default function Dictionary() {
 
   // Save a word (avoid duplicates)
   function handleSave(wordData) {
-    if (!savedWords.some((item) => item.word === wordData.word)) {
+    if (wordData.remove) {
+      setSavedWords(savedWords.filter((item) => item.word !== wordData.word));
+    } else if (!savedWords.some((item) => item.word === wordData.word)) {
       setSavedWords([...savedWords, wordData]);
     }
   }
@@ -124,23 +128,26 @@ export default function Dictionary() {
 
   return (
     <div className="Dictionary">
-      <input
-        type="text"
-        placeholder="Type a word..."
-        value={keyword}
-        autoFocus={true}
-        onChange={handleKeywordChange}
-      />
-      <button onClick={search}>Search</button>
-
-      <Results results={results} onSave={handleSave} />
+      <div className="search-form">
+        <form onSubmit={Search}>
+          <input
+            type="search"
+            placeholder="Type a word..."
+            autoFocus={true}
+            onChange={handleKeywordChange}
+          />
+          <button type="submit" className="search-btn" aria-label="Search">
+            <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" />
+          </button>
+        </form>
+      </div>
+      <Results results={results} onSave={handleSave} savedWords={savedWords} />{" "}
       <SavedWords
         savedWords={savedWords}
         onRemove={handleRemove}
         onClear={handleClear}
         onExport={handleExport}
       />
-
       {loading && <p>Loading...</p>}
     </div>
   );

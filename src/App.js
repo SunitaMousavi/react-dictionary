@@ -7,7 +7,12 @@ function App() {
   return (
     <div className="App container">
       <header className="App-header">
-        <img src={Books} alt="Books logo" />
+        <img
+          src={Books}
+          className="img-fluid mx-auto d-block"
+          alt="Books logo"
+          style={{ width: "500px", height: "auto", marginTop: "20px" }}
+        />
       </header>
       <main>
         <Dictionary />
