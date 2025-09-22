@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+
+// FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+// React-Bootstrap Spinner
+import Spinner from "react-bootstrap/Spinner";
+
+// Components
 import Results from "./Results";
 import SavedWords from "./SavedWords";
 
 export default function Dictionary() {
+  // STATE
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,16 +27,16 @@ export default function Dictionary() {
   // Search API
   async function Search(event) {
     event.preventDefault();
-    if (!keyword) return; // avoid empty search
+    if (!keyword) return;
     setLoading(true);
 
     try {
       const response = await axios.get(
         `https://api.dictionaryapi.dev/api/v2/entries/en/${keyword}`
       );
-      setResults(response.data[0]); // take first result
+      setResults(response.data[0]);
     } catch (error) {
-      setResults(null); // clear result on error
+      setResults(null);
       alert(
         "Sorry, we couldn't find the word you were looking for. Please try again."
       );
@@ -37,7 +45,7 @@ export default function Dictionary() {
     }
   }
 
-  // Save a word (avoid duplicates)
+  // Save, Remove, Clear, Export handlers (same as before)
   function handleSave(wordData) {
     if (wordData.remove) {
       setSavedWords(savedWords.filter((item) => item.word !== wordData.word));
@@ -46,44 +54,29 @@ export default function Dictionary() {
     }
   }
 
-  // Remove one word
   function handleRemove(word) {
     setSavedWords(savedWords.filter((item) => item.word !== word));
   }
 
-  // Clear all words
   function handleClear() {
     setSavedWords([]);
   }
 
-  // CSV Export for Anki
   function handleExport() {
     const headers = ["Front", "Back"];
-
     const rows = savedWords.map((item) => {
-      // ------------------
-      // FRONT SIDE
-      // ------------------
-      const word = `**${item.word}**`; // bold
+      const word = `${item.word}`;
       const phonetic =
         item.phonetic ||
         (item.meanings[0]?.phonetic ? item.meanings[0].phonetic : "");
-
-      // Front = word + phonetic
       const front = `${word}${phonetic ? "\n" + phonetic : ""}`;
 
-      // ------------------
-      // BACK SIDE
-      // ------------------
-      const backParts = item.meanings.map((m, i) => {
+      const backParts = item.meanings.map((m) => {
         const definition = `• ${m.partOfSpeech}: ${m.definitions[0]?.definition}`;
-
-        // Examples (up to 2)
         const examples = m.definitions
           .slice(0, 2)
           .map((d, idx) => `• Example ${idx + 1}: ${d.example || "(none)"}`)
           .join("\n");
-
         const collocations = m.collocations
           ? `• Collocations: ${m.collocations.join(", ")}`
           : "";
@@ -108,11 +101,10 @@ export default function Dictionary() {
       });
 
       const back = backParts.join("\n\n");
-
       return [front, back];
     });
 
-    let csvContent =
+    const csvContent =
       "data:text/csv;charset=utf-8," +
       [headers, ...rows]
         .map((e) => `"${e[0]}","${e[1].replace(/"/g, '""')}"`)
@@ -126,6 +118,7 @@ export default function Dictionary() {
     document.body.removeChild(link);
   }
 
+  // RENDER
   return (
     <div className="Dictionary">
       <div className="search-form">
@@ -135,20 +128,30 @@ export default function Dictionary() {
             placeholder="Type a word..."
             autoFocus={true}
             onChange={handleKeywordChange}
+            className="search-input"
           />
           <button type="submit" className="search-btn" aria-label="Search">
             <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" />
           </button>
         </form>
       </div>
-      <Results results={results} onSave={handleSave} savedWords={savedWords} />{" "}
+
+      <Results results={results} onSave={handleSave} savedWords={savedWords} />
+
+      {loading && (
+        <div className="spinner-container">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      )}
+
       <SavedWords
         savedWords={savedWords}
         onRemove={handleRemove}
         onClear={handleClear}
         onExport={handleExport}
       />
-      {loading && <p>Loading...</p>}
     </div>
   );
 }

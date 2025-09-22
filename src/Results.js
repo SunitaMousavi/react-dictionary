@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+
+// FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as regularBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 
 export default function Results({ results, onSave, savedWords }) {
-  // --- Hooks must be at top ---
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  // STATE
   const [isSaved, setIsSaved] = useState(false);
 
   // Update isSaved whenever results or savedWords change
@@ -17,13 +18,15 @@ export default function Results({ results, onSave, savedWords }) {
     }
   }, [results, savedWords]);
 
-  // If no results, render nothing
+  // Return null if no results
   if (!results) return null;
 
+  // Handlers
   const playAudio = (url) => {
     if (url) new Audio(url).play();
   };
 
+  // Toggle save/unsave
   const toggleSave = () => {
     if (isSaved) {
       onSave({ word: results.word, remove: true });
@@ -47,55 +50,35 @@ export default function Results({ results, onSave, savedWords }) {
     }
   };
 
+  // Render
   return (
     <div className="Results">
-      {/* Word card */}
-      <div className="card" style={{ position: "relative", padding: "20px" }}>
-        {/* Bookmark button */}
+      {/* Word Card */}
+      <div className="card word-card">
+        {/* Bookmark Button */}
         <button
           onClick={toggleSave}
-          style={{
-            position: "absolute",
-            top: "15px",
-            right: "15px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          }}
           aria-label={isSaved ? "Unsave word" : "Save word"}
-        >
+          className="bookmark-btn">
           <FontAwesomeIcon
             icon={isSaved ? solidBookmark : regularBookmark}
-            size="2x"
-            color="#f9f6ef"
+            size="2xl"
           />
         </button>
 
-        {/* Word + phonetics */}
+        {/* Word + Phonetics */}
         <div className="word-info">
           <h2 className="word">{results.word}</h2>
           <div className="phonetics">
             {results.phonetics?.map((p, i) => (
-              <div key={i} className="phonetic-item" style={{ marginBottom: "5px" }}>
-                {p.text && <span>{p.text}</span>}
+              <div key={i} className="phonetic-item">
+                {p.text && <span className="phonetic-text">{p.text}</span>}
                 {p.audio && (
                   <button
                     onClick={() => playAudio(p.audio)}
-                    onMouseEnter={() => setHoveredIndex(i)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    style={{
-                      marginLeft: "10px",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
                     aria-label={`Play pronunciation for ${results.word}`}
-                  >
-                    <FontAwesomeIcon
-                      icon={faVolumeHigh}
-                      size="lg"
-                      color={hoveredIndex === i ? "rgba(133, 104, 104, 1)6ef" : "#f9f6ef"}
-                    />
+                    className="audio-btn">
+                    <FontAwesomeIcon icon={faVolumeHigh} size="lg" />
                   </button>
                 )}
               </div>
@@ -104,26 +87,27 @@ export default function Results({ results, onSave, savedWords }) {
         </div>
       </div>
 
-      {/* Meanings card */}
-      <div className="card" style={{ padding: "20px", marginTop: "15px" }}>
+      {/* Meanings Card */}
+      <div className="card meanings-card">
         {results.meanings?.map((meaning, index) => (
-          <div key={index}>
-            <h3>{meaning.partOfSpeech}</h3>
-            <ul>
+          <div key={index} className="meaning">
+            <h4 className="part-of-speech">{meaning.partOfSpeech}</h4>
+            <ul className="definitions">
               {meaning.definitions.map((def, i) => (
-                <li key={i}>
-                  {def.definition}
-                  {def.example && <em> - {def.example}</em>}
+                <li key={i} className="definition">
+                  <span>{def.definition}</span>
+                  {def.example && <em className="example"> — {def.example}</em>}
                 </li>
               ))}
             </ul>
+
             {meaning.synonyms?.length > 0 && (
-              <p>
+              <p className="synonyms">
                 <strong>Synonyms:</strong> {meaning.synonyms.join(", ")}
               </p>
             )}
             {meaning.antonyms?.length > 0 && (
-              <p>
+              <p className="antonyms">
                 <strong>Antonyms:</strong> {meaning.antonyms.join(", ")}
               </p>
             )}

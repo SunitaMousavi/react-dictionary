@@ -1,64 +1,348 @@
 :root {
-  --color-background: #6d6941;
-  --color-primary: #f9f6ef;
-  --border: 2px solid #663b2a;
+  --color-background: #414033; /* ink / deep background */
+  --color-primary: #e2c7a1; /* parchment paper */
+  --color-accent: #6d6941; /* muted olive */
+  --color-ornament: #724817; /* warm brown for dividers/accents */
+  --box-shadow: 0 6px 12px rgba(57, 33, 24, 0.25);
+  --border: 2px solid #d6b88e;
   --inner-radius-border: 6px;
   --outer-radius-border: 8px;
   --space-sm: 10px;
   --space-md: 16px;
   --space-lg: 24px;
+  --transition: all 0.3s ease;
+  --font-serif: "Merriweather", "Georgia", serif;
+  --font-classic: "Crimson Text", "Times New Roman", serif;
 }
 
+/* ------------------------------
+   Spinner
+------------------------------- */
+.Dictionary .spinner-container {
+  color: var(--color-background);
+  display: flex;
+  justify-content: center;
+  margin: var(--space-md) 0;
+}
+
+/* ------------------------------
+   Dictionary Search Form
+------------------------------- */
 .Dictionary .search-form {
   background-color: var(--color-background);
   padding: var(--space-lg);
-  border: var(--border);
   border-radius: var(--outer-radius-border);
+  margin: var(--space-md) auto;
+  box-shadow: var(--box-shadow);
   max-width: 700px;
-  margin: 16px auto;
   width: 100%;
-  height: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.search-form form {
+.Dictionary .search-form form {
   display: flex;
-  border-radius: 12px;
+  border-radius: var(--inner-radius-border);
 }
 
-.search-form input {
-  flex: 1; /* take all available space */
+.Dictionary .search-form input {
+  flex: 1;
   padding: var(--space-sm);
   border: none;
   border-radius: var(--inner-radius-border);
   outline: none;
   background-color: var(--color-primary);
+  transition: var(--transition);
+  color: var(--color-background);
+  font-family: var(--font-serif);
 }
 
-.search-form input:focus {
-  background-color: #fff;
-  box-shadow: inset 0 0 0 2px #663b2a; /* highlight on focus */
+.Dictionary .search-form input::placeholder {
+  color: var(--color-background);
+  opacity: 0.6;
 }
 
-.search-form .search-btn {
-  color: #f9f6ef;
+.Dictionary .search-form input:focus {
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+}
+
+.Dictionary .search-form .search-btn {
+  color: var(--color-primary);
   background: none;
   border: none;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: var(--transition);
 }
 
-.search-form .search-btn:hover {
-  color: #663b2a;
+.Dictionary .search-form .search-btn:hover {
+  color: var(--color-accent);
 }
 
-.Results .card {
-  background-color: var(--color-background);
-  padding: var(--space-md);
+/* ------------------------------
+   Results & SavedWords Cards
+------------------------------- */
+.Results .card,
+.SavedWords .card {
+  background-color: var(--color-primary);
+  color: var(--color-background);
   border: var(--border);
   border-radius: var(--outer-radius-border);
+  box-shadow: var(--box-shadow);
+  margin: var(--space-md) auto;
+  padding: var(--space-lg);
   max-width: 700px;
-  margin: 16px auto;
   width: 100%;
-  height: auto;
+  position: relative;
+}
+
+/* Decorative inner frame */
+.Results .card::before,
+.SavedWords .card::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border: 1px dashed rgba(57, 33, 24, 0.25);
+  border-radius: var(--inner-radius-border);
+  pointer-events: none;
+}
+
+/* ------------------------------
+   Word Section
+------------------------------- */
+.Results .word-card {
+  position: relative;
+}
+
+.Results .word-info .word {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-ornament);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.Results .bookmark-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-background);
+  transition: var(--transition);
+}
+
+.Results .audio-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-background);
+  transition: var(--transition);
+}
+
+.Results .bookmark-btn:hover,
+.Results .audio-btn:hover {
+  color: var(--color-accent);
+}
+
+/* ------------------------------
+   Meanings Section
+------------------------------- */
+.meanings-card .meaning {
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  position: relative;
+}
+
+.meanings-card .meaning:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.meanings-card .meaning:not(:last-child)::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-ornament),
+    transparent
+  );
+  margin-top: var(--space-sm);
+  opacity: 0.6;
+}
+
+.Results .part-of-speech {
+  color: var(--color-ornament);
+  font-style: italic;
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-classic);
+  text-transform: capitalize;
+}
+
+.Results .definitions {
+  padding-left: var(--space-md);
+  list-style-position: inside;
+  list-style-type: disc;
+  font-family: var(--font-classic);
+  line-height: 1.8;
+  color: #333;
+}
+
+.Results .example {
+  display: block;
+  color: #666;
+  font-style: italic;
+  margin-top: 4px;
+  margin-left: 8px;
+  font-size: 0.95rem;
+}
+
+.synonyms,
+.antonyms {
+  margin-top: var(--space-sm);
+  font-size: 0.95rem;
+  font-family: var(--font-classic);
+}
+
+.synonyms span,
+.antonyms span {
+  display: inline-block;
+  background: var(--color-background);
+  color: var(--color-primary);
+  padding: 4px 8px;
+  border-radius: var(--inner-radius-border);
+  margin: 2px;
+  font-size: 0.85rem;
+}
+
+/* ------------------------------
+   SavedWords Component
+------------------------------- */
+.SavedWords {
+  max-width: 700px;
+  margin: var(--space-md) auto;
+}
+
+.SavedWords .card {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border: var(--border);
+  border-radius: var(--outer-radius-border);
+  box-shadow: var(--box-shadow);
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.SavedWords .card::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border: 1px dashed rgba(57, 33, 24, 0.25);
+  border-radius: var(--inner-radius-border);
+  pointer-events: none;
+}
+
+.SavedWords h2 {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  margin-bottom: var(--space-md);
+  border-bottom: 2px solid var(--color-ornament);
+  padding-bottom: var(--space-sm);
+}
+
+.SavedWords p {
+  font-family: var(--font-classic);
+  font-size: 1rem;
+  color: #555;
+  margin-top: var(--space-sm);
+}
+
+.SavedWords ul {
+  list-style-type: disc;
+  padding-left: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.SavedWords ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-family: var(--font-classic);
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(114, 72, 23, 0.15);
+}
+
+.SavedWords ul li:last-child {
+  border-bottom: none;
+}
+
+.SavedWords ul li button {
+  background-color: transparent;
+  color: var(--color-ornament);
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.SavedWords ul li button:hover {
+  color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+.SavedWords-actions {
+  margin-top: var(--space-md);
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.SavedWords-actions button {
+  font-family: var(--font-classic);
+  font-size: 0.95rem;
+  padding: 6px 14px;
+  border-radius: var(--inner-radius-border);
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 2px 4px rgba(57, 33, 24, 0.2);
+}
+
+.SavedWords-actions button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  box-shadow: 0 4px 6px rgba(57, 33, 24, 0.3);
+}
+
+/* ------------------------------
+   Footer
+------------------------------- */
+.App-footer {
+  color: var(--color-background);
+  font-family: var(--font-classic);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: var(--space-md) 0;
+}
+
+.App-footer a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.App-footer a:hover {
+  color: var(--color-ornament);
+  text-decoration: underline;
 }
