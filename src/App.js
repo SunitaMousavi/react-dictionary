@@ -10,9 +10,8 @@ function App() {
       <header className="App-header">
         <img
           src={Books}
-          className="img-fluid mx-auto d-block"
+          className="logo img-fluid mx-auto d-block"
           alt="Books logo"
-          style={{ width: "500px", height: "auto", marginTop: "20px" }}
         />
       </header>
       <main>

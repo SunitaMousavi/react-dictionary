@@ -1,0 +1,57 @@
+/* For very small screens (phones < 480px) */
+@media (max-width: 480px) {
+  .App .logo {
+    width: 200px;
+    margin: 10px auto;
+    display: block;
+  }
+
+  .Dictionary .search-form {
+    padding: var(--space-md);
+  }
+
+  .Dictionary .search-form form {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .Dictionary .search-form input {
+    flex: 1;
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .Dictionary .search-form .search-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.3rem;
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    box-shadow: var(--box-shadow);
+  }
+
+  .Dictionary .search-form .search-btn:hover {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+  }
+
+  .Results .word-info .word {
+    font-size: 1.5rem;
+  }
+
+  .SavedWords h2 {
+    font-size: 1.4rem;
+  }
+
+  .Results .definitions,
+  .SavedWords ul li {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
