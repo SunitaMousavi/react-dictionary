@@ -1,4 +1,5 @@
 import "./App.css";
+import "./Responsive.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dictionary from "./Dictionary";
 import Books from "./Books.png";
